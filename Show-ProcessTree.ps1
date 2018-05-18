@@ -23,16 +23,19 @@ foreach ($Process in $Processes)
     $ParentLookup[$Process.ParentProcessId] = $Siblings
 }
 
-function Show-ProcessTree($ProcessId, $IndentLevel) {
+function Show-ProcessTree($ProcessId, $IndentLevel)
+{
   $Process = $IdLookup[$ProcessId]
   $Indent = "-" * $IndentLevel
 
   Write-Output ("{1}-| {0} PID: {2} PPID: {3}" -f $Process.ProcessName, $Indent, $Process.ProcessId, $Process.ParentProcessId)
-  foreach ($Child in ($ParentLookup[$ProcessId] | Sort-Object CreationDate)) {
+  foreach ($Child in ($ParentLookup[$ProcessId] | Sort-Object CreationDate))
+  {
     Show-ProcessTree $Child.ProcessId ($IndentLevel + 1)
   }
 }
 
-foreach ($Process in ($ProcessesWithoutParents | Sort-Object CreationDate)) {
+foreach ($Process in ($ProcessesWithoutParents | Sort-Object CreationDate))
+{
   Show-ProcessTree $Process.ProcessId 1
 }
