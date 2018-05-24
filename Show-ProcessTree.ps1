@@ -1,4 +1,4 @@
-﻿$IdLookup = @{}
+$IdLookup = @{}
 $ParentLookup = @{}
 $Orphans = @()
 
@@ -27,7 +27,6 @@ function Show-ProcessTree($ProcessId, $IndentLevel)
 {
   $Process = $IdLookup[$ProcessId]
   $Indent = "-" * $IndentLevel
-
   Write-Output ("{1}-| {0} PID: {2} PPID: {3}" -f $Process.ProcessName, $Indent, $Process.ProcessId, $Process.ParentProcessId)
   foreach ($Child in ($ParentLookup[$ProcessId] | Sort-Object CreationDate))
   {
@@ -35,7 +34,7 @@ function Show-ProcessTree($ProcessId, $IndentLevel)
   }
 }
 
-foreach ($Process in ($ProcessesWithoutParents | Sort-Object CreationDate))
+foreach ($Process in ($Orphans | Sort-Object CreationDate))
 {
   Show-ProcessTree $Process.ProcessId 1
 }
